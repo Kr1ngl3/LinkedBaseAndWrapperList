@@ -8,7 +8,7 @@ namespace LinkedBaseAndWrapperList
     /// </summary>
     /// <typeparam name="TModel"> Type of the model, should implement IModel</typeparam>
     /// <typeparam name="TWrapper"> Type of the wrapper, should implement IWrapper </typeparam>
-    class BaseList<TModel, TWrapper> where TModel : IModel where TWrapper : IWrapper
+    public class BaseList<TModel, TWrapper> where TModel : IModel where TWrapper : IWrapper
     {
         #region list
         // Underlying list
@@ -19,9 +19,9 @@ namespace LinkedBaseAndWrapperList
 
         #region events
         // Event containing action, that moves, removes or adds items, such that the state of the wrapper list matches the state of the base list
-        public event Action<Action<List<TWrapper>>> ListChanged = null!;
+        public event Action<Action<IList>>? CollectionChanged;
         // Event that notifies the wrapper list, and makes it rebuild its list
-        public event Action ListShouldRebuild = null!;
+        public event Action? CollectionShouldRebuild;
         #endregion
 
         #region methods to interact with list
@@ -71,7 +71,7 @@ namespace LinkedBaseAndWrapperList
         public void Clear()
         {
             _list.Clear();
-            ListShouldRebuild?.Invoke();
+            CollectionShouldRebuild?.Invoke();
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace LinkedBaseAndWrapperList
         private void Do(Action<IList> action)
         {
             action.Invoke(_list);
-            ListChanged?.Invoke(action);
+            CollectionChanged?.Invoke(action);
         }
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace LinkedBaseAndWrapperList
                 convertedValues.Add((TWrapper)item.ToWrapper);
 
             // creates new Action<IList> by invoking action and passing in the converted values
-            ListChanged?.Invoke(list => action.Invoke(list, convertedValues));
+            CollectionChanged?.Invoke(list => action.Invoke(list, convertedValues));
         }
         #endregion
     }

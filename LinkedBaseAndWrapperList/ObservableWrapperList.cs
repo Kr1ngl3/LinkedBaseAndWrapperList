@@ -1,17 +1,26 @@
-﻿using System.Collections.Specialized;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace LinkedBaseAndWrapperList
 {
     /// <summary>
     /// Wrapper list, the list containging wrapper class of models, the list can only be read from, all intereaction happens with the base class
+    /// this is observable and therefore implements INotifyCollectionChanged, and does so by having an observable collection as inner list instead of normal list,
+    /// and then using its CollectionChanged event passes the information on
     /// </summary>
     /// <typeparam name="TModel"> Type of model </typeparam>
     /// <typeparam name="TWrapper"> Type of wrapper </typeparam>
-    public class WrapperList<TModel, TWrapper> where TModel : IModel where TWrapper : IWrapper
+    public class ObservableWrapperList<TModel, TWrapper> : INotifyCollectionChanged where TModel : IModel where TWrapper : IWrapper
     {
         #region list
         // underlying list
-        private readonly List<TWrapper> _list = new List<TWrapper>();
+        private readonly ObservableCollection<TWrapper> _list = new ObservableCollection<TWrapper>();
         // public gettor of the list
         public IEnumerable<TWrapper> List => _list;
         #endregion
@@ -23,7 +32,7 @@ namespace LinkedBaseAndWrapperList
 
         #region events
         //event invoked when anything changes on the lists
-        public event Action? CollectionChanged;
+        public event NotifyCollectionChangedEventHandler? CollectionChanged;
         #endregion
 
         #region methods
@@ -31,8 +40,11 @@ namespace LinkedBaseAndWrapperList
         /// Constructor maps to a given base list, by subscribing to its events and saving some of its members in actions
         /// </summary>
         /// <param name="pList"> base list to map to </param>
-        public WrapperList(BaseList<TModel, TWrapper> pList)
+        public ObservableWrapperList(BaseList<TModel, TWrapper> pList)
         {
+            // send CollectionChanged event further through 
+            _list.CollectionChanged += (sender, args) => CollectionChanged?.Invoke(sender, args);
+
             // creates rebuild action
             _rebuildCollectionAction = new Action(() =>
             {
@@ -54,17 +66,15 @@ namespace LinkedBaseAndWrapperList
         private void OnCollectionShouldRebuild()
         {
             _rebuildCollectionAction.Invoke();
-            CollectionChanged?.Invoke();
         }
 
         /// <summary>
         /// Changes list based on given action, to match base list
         /// </summary>
         /// <param name="action"> Action to run on list </param>
-        private void OnCollectionChanged(Action<List<TWrapper>> action)
+        private void OnCollectionChanged(Action<ObservableCollection<TWrapper>> action)
         {
             action.Invoke(_list);
-            CollectionChanged?.Invoke();
         }
         #endregion
     }

@@ -1,6 +1,6 @@
 ﻿namespace LinkedBaseAndWrapperList
 {
-    interface IWrapper
+    public interface IWrapper
     {
     }
 }

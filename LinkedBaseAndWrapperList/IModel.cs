@@ -1,6 +1,6 @@
 ﻿namespace LinkedBaseAndWrapperList
 {
-    interface IModel
+    public interface IModel
     {
         public IWrapper ToWrapper { get; }
     }
