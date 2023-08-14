@@ -1,0 +1,6 @@
+﻿namespace LinkedBaseAndWrapperList
+{
+    interface IWrapper
+    {
+    }
+}

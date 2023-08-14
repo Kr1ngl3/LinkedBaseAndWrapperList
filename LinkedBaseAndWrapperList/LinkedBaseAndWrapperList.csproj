@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Description>Helper classes to make lists who update together</Description>
+  </PropertyGroup>
+
+	<PropertyGroup>
+		<PackageId>LinkedBaseAndWrapperList</PackageId>
+		<Version>1.0.0</Version>
+		<Authors>Htennek</Authors>
+		<RepositoryUrl>https://github.com/Kr1ngl3/LinkedBaseAndWrapperList</RepositoryUrl>
+		<PackageLicenseFile>License .txt</PackageLicenseFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Include="..\..\License .txt">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
+</Project>
