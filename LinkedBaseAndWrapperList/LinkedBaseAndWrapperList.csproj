@@ -13,10 +13,15 @@
 		<Authors>Htennek</Authors>
 		<RepositoryUrl>https://github.com/Kr1ngl3/LinkedBaseAndWrapperList</RepositoryUrl>
 		<PackageLicenseFile>License .txt</PackageLicenseFile>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
 
 	<ItemGroup>
 	  <None Include="..\..\License .txt">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	  <None Include="..\README.md">
 	    <Pack>True</Pack>
 	    <PackagePath>\</PackagePath>
 	  </None>
