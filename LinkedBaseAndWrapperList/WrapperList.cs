@@ -12,7 +12,7 @@ namespace LinkedBaseAndWrapperList
         #region list
         // underlying list
         private readonly List<TWrapper> _list = new List<TWrapper>();
-        // public gettor of the list
+        // Exposed IEnumerable of the list
         public IEnumerable<TWrapper> List => _list;
         #endregion
 
@@ -37,7 +37,7 @@ namespace LinkedBaseAndWrapperList
             _rebuildCollectionAction = new Action(() =>
             {
                 _list.Clear();
-                foreach (TModel t in pList.List)
+                foreach (TModel t in pList)
                     _list.Add((TWrapper)t.ToWrapper);
             });
 
@@ -47,6 +47,13 @@ namespace LinkedBaseAndWrapperList
             pList.CollectionShouldRebuild += OnCollectionShouldRebuild;
             pList.CollectionChanged += OnCollectionChanged;
         }
+
+        /// <summary>
+        /// Indexed getter 
+        /// </summary>
+        /// <param name="index"> Index to get wrapper item from </param>
+        /// <returns> Returns item at given index </returns>
+        public TWrapper this[int index] { get => _list[index]; }
 
         /// <summary>
         /// Invokes list should rebuild

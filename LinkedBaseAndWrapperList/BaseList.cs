@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 
 namespace LinkedBaseAndWrapperList
 {
@@ -8,13 +9,12 @@ namespace LinkedBaseAndWrapperList
     /// </summary>
     /// <typeparam name="TModel"> Type of the model, should implement IModel</typeparam>
     /// <typeparam name="TWrapper"> Type of the wrapper, should implement IWrapper </typeparam>
-    public class BaseList<TModel, TWrapper> where TModel : IModel where TWrapper : IWrapper
+    public class BaseList<TModel, TWrapper> : IEnumerable where TModel : IModel where TWrapper : IWrapper
     {
+
         #region list
         // Underlying list
         private readonly List<TModel> _list = new List<TModel>();
-        // Public accesor for the list, but as IEnumerable
-        public IEnumerable<TModel> List => _list;
         #endregion
 
         #region events
@@ -31,6 +31,26 @@ namespace LinkedBaseAndWrapperList
         /// <param name="index"> Index of which to set and get </param>
         /// <returns> Returns value at index </returns>
         public TModel this[int index] { get => _list[index]; set => Do((list, item) => list[index] = item[0], value); }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
+        /// <returns> An enumerator that can be used to iterate through the collection. </returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return _list.GetEnumerator();
+        }
+
+        
+        /// <summary>
+        /// Runs where function on underlying list
+        /// </summary>
+        /// <param name="predicate"> Predicate that determines what items to return </param>
+        /// <returns></returns>
+        public IEnumerable<TModel> Where(Func<TModel, bool> predicate)
+        {
+            return _list.Where(predicate);
+        }
 
         /// <summary>
         /// Adds a collection to base and wrapper lists

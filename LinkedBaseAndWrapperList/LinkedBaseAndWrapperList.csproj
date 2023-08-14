@@ -9,7 +9,7 @@
 
 	<PropertyGroup>
 		<PackageId>LinkedBaseAndWrapperList</PackageId>
-		<Version>1.0.3</Version>
+		<Version>1.0.5</Version>
 		<Authors>Htennek</Authors>
 		<RepositoryUrl>https://github.com/Kr1ngl3/LinkedBaseAndWrapperList</RepositoryUrl>
 		<PackageLicenseFile>License .txt</PackageLicenseFile>
