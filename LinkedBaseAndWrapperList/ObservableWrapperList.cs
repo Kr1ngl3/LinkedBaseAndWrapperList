@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -18,6 +19,17 @@ namespace LinkedBaseAndWrapperList
     /// <typeparam name="TWrapper"> Type of wrapper </typeparam>
     public class ObservableWrapperList<TModel, TWrapper> : WrapperListBase<TModel, TWrapper>, INotifyCollectionChanged where TModel : IModel where TWrapper : IWrapper
     {
+        #region list
+        // underlying list as observable collection to use INotifyCollectionChanged
+        private readonly ObservableCollection<TWrapper> _list = new ObservableCollection<TWrapper>();
+
+        // accessor for non generic list, used in OnCollectionChanged of base class
+        protected override IList GetNonGenericList => _list;
+
+        // generic accessor for list
+        protected override IList<TWrapper> GetList => _list;
+        #endregion
+
         #region events
         //event invoked when anything changes on the lists
         public event NotifyCollectionChangedEventHandler? CollectionChanged;

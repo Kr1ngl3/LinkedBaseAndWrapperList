@@ -10,6 +10,17 @@ namespace LinkedBaseAndWrapperList
     /// <typeparam name="TWrapper"> Type of wrapper </typeparam>
     public class WrapperList<TModel, TWrapper> : WrapperListBase<TModel, TWrapper> where TModel : IModel where TWrapper : IWrapper
     {
+        #region list
+        // underlying list
+        private readonly List<TWrapper> _list = new List<TWrapper>();
+
+        // accessor for non generic list, used in OnCollectionChanged of base class
+        protected override IList GetNonGenericList => _list;
+
+        // generic accessor for list
+        protected override IList<TWrapper> GetList => _list;
+        #endregion
+
         #region events
         //event invoked when anything changes on the lists
         public event Action? CollectionChanged;

@@ -12,10 +12,11 @@ namespace LinkedBaseAndWrapperList
     public abstract class WrapperListBase<TModel, TWrapper> where TModel : IModel where TWrapper : IWrapper
     {
         #region list
-        // underlying list
-        protected readonly ObservableCollection<TWrapper> _list = new ObservableCollection<TWrapper>();
+        // accessors to underlying list
+        protected abstract IList GetNonGenericList { get; }
+        protected abstract IList<TWrapper> GetList { get; }
         // Exposed IEnumerable of the list
-        public IEnumerable<TWrapper> List => _list;
+        public IEnumerable<TWrapper> List => GetList;
         #endregion
 
         #region actions
@@ -31,9 +32,9 @@ namespace LinkedBaseAndWrapperList
             // creates rebuild action
             _rebuildCollectionAction = new Action(() =>
             {
-                _list.Clear();
+                GetList.Clear();
                 foreach (TModel t in baseList)
-                    _list.Add((TWrapper)t.ToWrapper);
+                    GetList.Add((TWrapper)t.ToWrapper);
             });
 
             // creates index of func
@@ -54,7 +55,7 @@ namespace LinkedBaseAndWrapperList
         /// </summary>
         /// <param name="index"> Index to get wrapper item from </param>
         /// <returns> Returns item at given index </returns>
-        public TWrapper this[int index] { get => _list[index]; }
+        public TWrapper this[int index] { get => GetList[index]; }
 
         /// <summary>
         /// returns wrapper item in the list, based on reference of model item
@@ -83,7 +84,7 @@ namespace LinkedBaseAndWrapperList
         /// <param name="action"> Action to run on list </param>
         protected virtual void OnCollectionChanged(Action<IList> action)
         {
-            action(_list);
+            action(GetNonGenericList);
         }
         #endregion
     }
