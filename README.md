@@ -1,2 +1,2 @@
 # LinkedBaseAndWrapperList
-helper classes to make lists who update together
+helper classes to make lists which update together
